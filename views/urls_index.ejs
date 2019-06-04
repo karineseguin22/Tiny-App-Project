@@ -10,5 +10,17 @@
 </head>
 <body style="font-size:20px; padding:50px;">
     <!-- Add EJS code here -->
-</body>
-</html>
+    <%= //create a for in loop  %> 
+    <% //let web = (Object.keys(urls)); %>
+  <ul>
+<%for (var property in urls){  %>
+        <li><%=property %> : <%= urls[property]%></li>
+        <% }%> 
+    
+</ul>
+<a href='#'>To shorten url</a>
+</body> 
+
+</ul>
+ 
+</html> 
