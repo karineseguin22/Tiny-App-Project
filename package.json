@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/karineseguin22/Tiny-App-Project/issues"
   },
-  "homepage": "https://github.com/karineseguin22/Tiny-App-Project#readme"
+  "homepage": "https://github.com/karineseguin22/Tiny-App-Project#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
