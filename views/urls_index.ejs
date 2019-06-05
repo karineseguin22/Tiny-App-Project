@@ -17,10 +17,16 @@
 </header>
   <ul>
 <%for (var property in urls){  %>
-        <li><%=property %> : <%= urls[property]%></li>
+        <li><%=property %> : <%= urls[property]%>
+        <form method="POST" action="/urls/9sm5xK/delete">
+        <button type="submit">DELETE</button>
+        </form>
+        </li>
+
         <% }%> 
     
 </ul>
+
 <a href='#'>To shorten url</a>
 </body> 
 
