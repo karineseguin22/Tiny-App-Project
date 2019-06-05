@@ -21,6 +21,13 @@ var urlDatabase = {
   });
   //post route
   app.post("/urls", (req, res) => {
+    //create new id that will represent short url
+    const id = generateRandomString(); 
+    //obtain body from browser
+    const newUrl = req.body; 
+    //add to object
+    urlDatabase[id] = newUrl.longURL; 
+    console.log(urlDatabase); //Log our new object 
     console.log(req.body);  // Log the POST request body to the console
     res.send("Ok");         // Respond with 'Ok' (we will replace this)
   });
