@@ -20,7 +20,12 @@ var urlDatabase = {
     res.send("Hello!");
   });
 
-  
+//cookie 
+app.post('/login', (req, res) => {
+  res.cookie('username', req.body.username)
+  console.log(req.body.username); 
+res.redirect('/urls'); 
+}); 
 //update post 
   app.post('/urls/:shortURL/update', (req, res) => {
     console.log('req body:', req.body); 
