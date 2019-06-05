@@ -12,6 +12,9 @@
     <!-- Add EJS code here -->
     <%= //create a for in loop  %> 
     <% //let web = (Object.keys(urls)); %>
+   <header>
+    <% include ../partials/_header.ejs %>
+</header>
   <ul>
 <%for (var property in urls){  %>
         <li><%=property %> : <%= urls[property]%></li>
