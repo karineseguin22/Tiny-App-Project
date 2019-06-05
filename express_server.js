@@ -19,7 +19,19 @@ var urlDatabase = {
   app.get("/", (req, res) => {
     res.send("Hello!");
   });
-
+//update post 
+  app.post('/urls/:shortURL/update', (req, res) => {
+    console.log('req body:', req.body); 
+    //extract id
+    const id = req.params.shortURL;
+    //extract updated website a
+    const info = req.body.longURL;
+    //update on object
+    urlDatabase[id]= info; 
+    console.log(urlDatabase);
+    //redirect 
+    res.redirect("/urls"); 
+  }); 
   
   //post route
   app.post("/urls", (req, res) => {
