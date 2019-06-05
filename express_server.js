@@ -20,7 +20,7 @@ var urlDatabase = {
     res.send("Hello!");
   });
 
-  console.log('haha');
+  
 //update post 
   app.post('/urls/:shortURL/update', (req, res) => {
     console.log('req body:', req.body); 
