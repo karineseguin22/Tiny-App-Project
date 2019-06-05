@@ -29,16 +29,16 @@ var urlDatabase = {
     //const newUrl = req.body; //this line was not necessary 
     //add to object
     urlDatabase[id] = req.body.longURL; 
-    console.log(urlDatabase); //Log our new object 
-    console.log(req.body);  // Log the POST request body to the console
+    //console.log(urlDatabase); //Log our new object 
+    //console.log(req.body);  // Log the POST request body to the console
     //console.log(newUrl.longURL) //no longer valid 
-    console.log(id); 
+    //console.log(id); 
     res.redirect(`/urls/${id}`);         // redirect to link of website we just added 
   });
 
 app.get("/urls", (req, res) => {
     let templateVars = { urls: urlDatabase };
-    console.log(urlDatabase);
+    //console.log(urlDatabase);
     res.render("urls_index", templateVars);
   });
 
@@ -66,6 +66,17 @@ app.get("/urls", (req, res) => {
 
     res.redirect(longURL);
   });
+
+    //delete
+app.post("/urls/:shortURL/delete", (req, res) =>{
+  //extract id
+  const id = req.params.shortURL;
+  console.log(id); 
+  console.log(urlDatabase[id]); 
+  //delete url
+  delete urlDatabase[id]; 
+res.redirect("/urls");
+});
   
 
 
