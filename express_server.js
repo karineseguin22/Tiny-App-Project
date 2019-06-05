@@ -26,19 +26,19 @@ var urlDatabase = {
     //create new id that will represent short url
     const id = generateRandomString(); 
     //obtain body from browser
-    const newUrl = req.body; 
+    //const newUrl = req.body; //this line was not necessary 
     //add to object
-    urlDatabase[id] = newUrl.longURL; 
+    urlDatabase[id] = req.body.longURL; 
     console.log(urlDatabase); //Log our new object 
     console.log(req.body);  // Log the POST request body to the console
-    console.log(newUrl.longURL)
+    //console.log(newUrl.longURL) //no longer valid 
     console.log(id); 
     res.redirect(`/urls/${id}`);         // redirect to link of website we just added 
   });
 
 app.get("/urls", (req, res) => {
     let templateVars = { urls: urlDatabase };
-    //console.log(templateVars);
+    console.log(urlDatabase);
     res.render("urls_index", templateVars);
   });
 
@@ -52,6 +52,19 @@ app.get("/urls", (req, res) => {
     let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
     //console.log(urlDatabase[req.params.shortURL]);
     res.render("urls_show", templateVars);
+  });
+
+  //short version of "/urls/:shortURL" (not done)
+  //The goal is to go to long url 
+  app.get("/u/:shortURL", (req, res) => {
+    //const sURL = req.params.shortURL; //not neccesary 
+    const longURL = urlDatabase[req.params.shortURL];
+    //console.log(urlDatabase.b2xVn2); 
+    //console.log(req.params.shortURL);//gives shortURL ex: b2xVn2  
+    //console.log(sURL); // gives shortURL
+    //console.log(urlDatabase[sURL]);// need to put in square brakets when variable
+
+    res.redirect(longURL);
   });
   
 
