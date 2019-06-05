@@ -19,6 +19,8 @@ var urlDatabase = {
   app.get("/", (req, res) => {
     res.send("Hello!");
   });
+
+  
   //post route
   app.post("/urls", (req, res) => {
     //create new id that will represent short url
@@ -29,7 +31,9 @@ var urlDatabase = {
     urlDatabase[id] = newUrl.longURL; 
     console.log(urlDatabase); //Log our new object 
     console.log(req.body);  // Log the POST request body to the console
-    res.send("Ok");         // Respond with 'Ok' (we will replace this)
+    console.log(newUrl.longURL)
+    console.log(id); 
+    res.redirect(`/urls/${id}`);         // redirect to link of website we just added 
   });
 
 app.get("/urls", (req, res) => {
