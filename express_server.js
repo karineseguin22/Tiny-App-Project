@@ -11,12 +11,18 @@ app.use(cookieParser());
 function generateRandomString() {
   return Math.floor((Math.random()*1000000000)).toString(36); 
 }
+//---------------------------------------------------------------------------------
+//Databases
 
+//data base storing website links
 var urlDatabase = {
     "b2xVn2": "http://www.lighthouselabs.ca",
     "9sm5xK": "http://www.google.com"
   };
 
+  //creating global object called user 
+  const users = {}
+//---------------------------------------------------------------------------------
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
