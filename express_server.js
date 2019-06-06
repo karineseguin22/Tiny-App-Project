@@ -23,18 +23,30 @@ var urlDatabase = {
   //creating global object called user 
   const users = {}
 //---------------------------------------------------------------------------------
+//http://localhost:8080/urls 
+
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
 //get to obtain register page
-app.get("/urls/register", (req, res) => {
+app.get("/register", (req, res) => {
   let templateVars = { username: req.cookies.username};
   res.render("urls_register",templateVars);
 }); 
 
 //to post register information 
 app.post("/register", (req, res) => {
+  //console.log(req.body.email);
+  //console.log(req.body.password);
+  const user_id = generateRandomString().toString(); 
+  //console.log(user_id); 
+  users[user_id] = {}; 
+  //console.log(users); 
+  users[user_id]["email"] = req.body.email; 
+  users[user_id]["password"] = req.body.password; 
+  users[user_id]["id"] = user_id; 
+  console.log(users); 
 res.redirect('/urls'); 
 }); 
 
