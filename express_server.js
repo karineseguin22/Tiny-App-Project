@@ -24,9 +24,13 @@ app.get("/", (req, res) => {
 
   //cookie 
 app.post('/login', (req, res) => {
-  debugger
   res.cookie("username", req.body.username)
   //console.log(req.body.username); 
+res.redirect('/urls'); 
+}); 
+
+app.post('/logout', (req, res) => {
+  res.cookie("username", "") 
 res.redirect('/urls'); 
 }); 
 
