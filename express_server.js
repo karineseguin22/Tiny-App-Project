@@ -21,6 +21,16 @@ app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
+//get to obtain register page
+app.get("/urls/register", (req, res) => {
+  let templateVars = { username: req.cookies.username};
+  res.render("urls_register",templateVars);
+}); 
+
+//to post register information 
+app.post("/register", (req, res) => {
+res.redirect('/urls'); 
+}); 
 
   //cookie 
 app.post('/login', (req, res) => {
@@ -69,7 +79,8 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_news");
+  let templateVars = { username: req.cookies.username};
+  res.render("urls_news", templateVars);
 });
 
 
