@@ -1,7 +1,7 @@
 <h1>TinyApp</h1> 
-<%=username%>
 
-<%if (!username){%> 
+
+<%if (!user){%> 
 <form method="POST" action="/login">
 
 <input class="form-control" type="text" name="username" placeholder="username:" style="width: 300px; margin: 1em">
@@ -10,6 +10,7 @@
 
 </form>
 <%} else{%>
+<%=user.email%>
 <form method="POST" action="/logout">
 
 <input class="form-control" type="text" name="username" placeholder="username:" style="width: 300px; margin: 1em">

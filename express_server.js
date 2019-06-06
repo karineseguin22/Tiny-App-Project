@@ -32,8 +32,13 @@ app.get("/", (req, res) => {
 
 //get to obtain register page
 app.get("/register", (req, res) => {
-  let templateVars = { username: req.cookies.username};
-  res.render("urls_register",templateVars);
+  const userObject = users[req.cookies.user_id];
+  let templateVars = {user: userObject};
+  console.log(req.cookies);
+  console.log(userObject); 
+  console.log(templateVars); 
+  console.log(users); 
+  res.render("urls_register", templateVars);
 }); 
 
 //to post register information 
@@ -116,20 +121,23 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase, username: req.cookies === undefined ? "" : req.cookies.username };
+  const userObject = users[req.cookies.user_id];
+  let templateVars = { urls: urlDatabase, user: userObject };
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
-  let templateVars = { username: req.cookies.username};
+  
+  const userObject = users[req.cookies.user_id];
+  let templateVars = {user: userObject};
   res.render("urls_news", templateVars);
 });
 
 
 
 app.get("/urls/:shortURL", (req, res) => {
-  
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], username: req.cookies["username"]};
+  const userObject = users[req.cookies.user_id];
+  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], user: userObject};
   //console.log(urlDatabase[req.params.shortURL]);
   res.render("urls_show", templateVars);
 });
