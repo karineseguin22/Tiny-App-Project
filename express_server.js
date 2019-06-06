@@ -30,6 +30,13 @@ app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
+//to obtain login page
+app.get("/login", (req, res) => {
+  const userObject = users[req.cookies.user_id];
+  let templateVars = {user: userObject};
+  res.render("login", templateVars)
+}); 
+
 //get to obtain register page
 app.get("/register", (req, res) => {
   const userObject = users[req.cookies.user_id];
