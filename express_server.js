@@ -11,6 +11,7 @@ app.use(cookieParser());
 function generateRandomString() {
   return Math.floor((Math.random()*1000000000)).toString(36); 
 }
+
 //---------------------------------------------------------------------------------
 //Databases
 
@@ -37,18 +38,39 @@ app.get("/register", (req, res) => {
 
 //to post register information 
 app.post("/register", (req, res) => {
-  //console.log(req.body.email);
-  //console.log(req.body.password);
+  //function to check if e-mail already exist
+const checkEmail = function (newemail){
+  for (const key in users) {
+    //console.log('user:' + users); 
+    //console.log(`e-mail: ${users[key].email}  `); 
+    if (users[key].email ==  newemail) {
+      return users[key].email; 
+    }
+  }
+  return false;  
+} 
+console.log(`Checking Function: ${checkEmail(req.body.email)}`);
+console.log(`New email: ${req.body.email}`);
+console.log(` Checking statement: ${( checkEmail(req.body.email) === req.body.email)}`)
+
+ if ( req.body.email === "" || req.body.password === ""){
+  res.status(400).send("Empty field");}
+ 
+
+  if (checkEmail(req.body.email)===req.body.email) {
+    res.status(400).send("Email already exist");
+   
+  
+ }else {  
   const user_id = generateRandomString().toString(); 
-  //console.log(user_id); 
   users[user_id] = {}; 
-  //console.log(users); 
-  users[user_id]["email"] = req.body.email; 
-  users[user_id]["password"] = req.body.password; 
-  users[user_id]["id"] = user_id; 
-  console.log(users); 
+  users[user_id]["email"] = req.body.email.toString(); 
+  users[user_id]["password"] = req.body.password.toString(); 
+  users[user_id]["id"] = user_id.toString();  
   res.cookie("user_id", user_id) //created cookie 
 res.redirect('/urls'); 
+}
+console.log(users); 
 }); 
 
 
