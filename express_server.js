@@ -47,8 +47,10 @@ app.post("/register", (req, res) => {
   users[user_id]["password"] = req.body.password; 
   users[user_id]["id"] = user_id; 
   console.log(users); 
+  res.cookie("user_id", user_id) //created cookie 
 res.redirect('/urls'); 
 }); 
+
 
   //cookie 
 app.post('/login', (req, res) => {
