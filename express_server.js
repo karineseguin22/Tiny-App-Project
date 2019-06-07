@@ -12,6 +12,27 @@ function generateRandomString() {
   return Math.floor((Math.random()*1000000000)).toString(36); 
 }
 
+const checkEmail = function (newemail){
+  for (const key in users) {
+    //console.log('user:' + users); 
+    //console.log(`e-mail: ${users[key].email}  `); 
+    if (users[key].email ==  newemail) {
+      return users[key].email; 
+    }
+  }
+  return false;  
+}
+const getID = function (newemail){
+  for (const key in users) {
+    //console.log('user:' + users); 
+    //console.log(`e-mail: ${users[key].email}  `); 
+    if (users[key].email ==  newemail) {
+      return users[key]; 
+    }
+  }
+  return false;  
+}
+
 //---------------------------------------------------------------------------------
 //Databases
 
@@ -50,21 +71,6 @@ app.get("/register", (req, res) => {
 
 //to post register information 
 app.post("/register", (req, res) => {
-  //function to check if e-mail already exist
-const checkEmail = function (newemail){
-  for (const key in users) {
-    //console.log('user:' + users); 
-    //console.log(`e-mail: ${users[key].email}  `); 
-    if (users[key].email ==  newemail) {
-      return users[key].email; 
-    }
-  }
-  return false;  
-} 
-console.log(`Checking Function: ${checkEmail(req.body.email)}`);
-console.log(`New email: ${req.body.email}`);
-console.log(` Checking statement: ${( checkEmail(req.body.email) === req.body.email)}`)
-
  if ( req.body.email === "" || req.body.password === ""){
   res.status(400).send("Empty field");}
  
@@ -88,13 +94,21 @@ console.log(users);
 
   //cookie 
 app.post('/login', (req, res) => {
-  res.cookie("username", req.body.username)
+  //res.cookie("username", req.body.username) //no longer need 
   //console.log(req.body.username); 
-res.redirect('/urls'); 
+  if (checkEmail(req.body.email) !== req.body.email) {
+    res.status(403).send("Email and/or password is invalid");
+  }
+  if (checkEmail(req.body.password) !== req.body.password) {
+    res.status(403).send("Email and/or password is invalid");
+  } else {
+    res.cookie("user", getId(req.body.email)) //set cookie
+  res.redirect('/urls', templateVars); 
+}
 }); 
 
 app.post('/logout', (req, res) => {
-  res.cookie("username", "") 
+  res.clearCookie('user_id'); 
 res.redirect('/urls'); 
 }); 
 
