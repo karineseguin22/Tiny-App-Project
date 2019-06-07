@@ -167,7 +167,11 @@ app.get("/urls/new", (req, res) => {
   // if (user_id === undefined){
   //   res.redirect('/urls/'); 
   // }
+  if (req.cookies.user) {
   res.render("urls_news", templateVars);
+  } else {
+    res.redirect('/urls');   
+  }
 });
 
 
