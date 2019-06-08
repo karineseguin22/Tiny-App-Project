@@ -1,12 +1,19 @@
 var express = require("express");
 var app = express();
 var PORT = 8080; // default port 8080
-var cookieParser = require('cookie-parser');
+var cookieSession = require('cookie-session')
 app.set("view engine", "ejs");
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieParser());
+
+app.use(cookieSession({
+  name: 'session',
+  keys: ['cake']
+
+  // Cookie Options
+  //maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}))
 
 const bcrypt = require('bcrypt');
 //const password = "purple-monkey-dinosaur"; // found in the req.params object
@@ -68,14 +75,14 @@ app.get("/", (req, res) => {
 
 //to obtain login page
 app.get("/login", (req, res) => {
-  const userObject = users[req.cookies.user];
+  const userObject = users[req.session.user];
   let templateVars = {user: userObject};
   res.render("login", templateVars)
 }); 
 
 //get to obtain register page
 app.get("/register", (req, res) => {
-  const userObject = users[req.cookies.user];
+  const userObject = users[req.session.user];
   let templateVars = {user: userObject};
   res.render("urls_register", templateVars);
 }); 
@@ -93,7 +100,7 @@ app.post("/register", (req, res) => {
   users[user_id]["email"] = req.body.email; 
   users[user_id]["password"] = bcrypt.hashSync(req.body.password, 10); 
   users[user_id]["id"] = user_id;  
-  res.cookie("user", user_id)  
+  req.session.user = user_id;   
   console.log(users);
 res.redirect('/urls'); 
 }
@@ -112,7 +119,7 @@ app.post('/login', (req, res) => {
 }
 for (const key in users) {
   if ((bcrypt.compareSync(req.body.password, users[key].password ))) {
-    res.cookie("user", getId(req.body.email)) 
+  req.session.user = getId(req.body.email); 
   res.redirect('/urls'); 
   }
 }
@@ -140,26 +147,26 @@ app.post("/urls/new", (req, res) => {
   //add to object
   urlDatabase[id] = {};
   urlDatabase[id]["longURL"] = req.body.longURL; 
-  urlDatabase[id]["userID"] = req.cookies.user; 
+  urlDatabase[id]["userID"] = req.session.user; 
   //console.log('urlDatabase', urlDatabase); //Log our new object 
   res.redirect(`/urls`);        
 });
 
 app.get("/urls", (req, res) => {
-  const userObject = users[req.cookies.user];
+  const userObject = users[req.session.user];
   let templateVars = { urls: urlDatabase, user: userObject };
    console.log(templateVars); 
   res.render("urls_index", templateVars);
 });
 
-app.get("/urls/new", (req, res) => {
-  const userObject = users[req.cookies.user];
+app.get("/urls/new", (req, res) => { 
+  const userObject = users[req.session.user];
   let templateVars = {user: userObject};
   //only client that is registed can acces this page -> check 
   // if (user_id === undefined){
   //   res.redirect('/urls/'); 
   // }
-  if (req.cookies.user) {
+  if (req.session.user) {
   res.render("urls_news", templateVars);
   } else {
     res.redirect('/urls');   
@@ -169,7 +176,7 @@ app.get("/urls/new", (req, res) => {
 
 
 app.get("/urls/:shortURL", (req, res) => {
-  const userObject = users[req.cookies.user];
+  const userObject = users[req.session.user];
   let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], user: userObject};
   //console.log(urlDatabase[req.params.shortURL]);
   res.render("urls_show", templateVars);
