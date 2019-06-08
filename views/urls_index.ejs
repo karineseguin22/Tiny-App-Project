@@ -17,7 +17,7 @@
     </header>
   <ul>
 <%for (var property in urls){  %>
-        <li><%=property %> : <%= urls[property]%>
+        <li><%=property %> : <%= urls[property].longURL%>
         <form method="POST" action="/urls/<%=property%>/delete">
         <button type="submit">DELETE</button>
         </form>

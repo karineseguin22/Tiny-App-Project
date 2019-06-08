@@ -50,8 +50,8 @@ const getPassword = function (password){
 
 //data base storing website links
 var urlDatabase = {
-    "b2xVn2": "http://www.lighthouselabs.ca",
-    "9sm5xK": "http://www.google.com"
+    "b2xVn2": { longURL: "http://www.lighthouselabs.ca", userID: "aJ481W"},
+    "9sm5xK": { longURL: "http://www.google.com", userID: "aJ481W"}
   };
 
   //creating global object called user 
@@ -74,10 +74,10 @@ app.get("/login", (req, res) => {
 app.get("/register", (req, res) => {
   const userObject = users[req.cookies.user];
   let templateVars = {user: userObject};
-  console.log(req.cookies);
-  console.log(userObject); 
-  console.log(templateVars); 
-  console.log(users); 
+  // console.log(req.cookies);
+  // console.log(userObject); 
+  // console.log(templateVars); 
+  // console.log(users); 
   res.render("urls_register", templateVars);
 }); 
 
@@ -97,7 +97,7 @@ app.post("/register", (req, res) => {
   res.cookie("user", user_id) //created cookie 
 res.redirect('/urls'); 
 }
-console.log(users); 
+//console.log(users); 
 }); 
 
 
@@ -105,7 +105,7 @@ console.log(users);
 app.post('/login', (req, res) => {
   //res.cookie("username", req.body.username) //no longer need 
   //console.log(req.body.username); 
-  console.log(`show id:${getId(req.body.email_)}`); 
+  //console.log(`show id:${getId(req.body.email_)}`); 
   if (checkEmail(req.body.email) !== req.body.email) {
     res.status(403).send("Email and/or is invalid");
   }
@@ -113,9 +113,9 @@ app.post('/login', (req, res) => {
     res.status(403).send("and/or password is invalid");
   } else {
     res.cookie("user", getId(req.body.email)) //set cookie
-    console.log(`what is cookie:${getId(req.body.email)}`);
-    console.log(req.body); 
-    console.log(req.body.email); 
+    // console.log(`what is cookie:${getId(req.body.email)}`);
+    // console.log(req.body); 
+    // console.log(req.body.email); 
   res.redirect('/urls'); 
 }
 }); 
@@ -127,7 +127,7 @@ res.redirect('/urls');
 
 //update post 
 app.post('/urls/:shortURL/update', (req, res) => {
-  console.log('req body:', req.body); 
+  // console.log('req body:', req.body); 
   //extract id
   const id = req.params.shortURL;
   //extract updated website a
@@ -140,14 +140,16 @@ app.post('/urls/:shortURL/update', (req, res) => {
 }); 
   
 //post route
-app.post("/urls", (req, res) => {
+app.post("/urls/new", (req, res) => {
   //create new id that will represent short url
   const id = generateRandomString(); 
   //obtain body from browser
   //const newUrl = req.body; //this line was not necessary 
   //add to object
-  urlDatabase[id] = req.body.longURL; 
-  //console.log(urlDatabase); //Log our new object 
+  urlDatabase[id] = {};
+  urlDatabase[id]["longURL"] = req.body.longURL; 
+  //urlDatabase[id]["userID"] = req.cookie.user; 
+  console.log('urlDatabase', urlDatabase); //Log our new object 
   //console.log(req.body);  // Log the POST request body to the console
   //console.log(newUrl.longURL) //no longer valid 
   //console.log(id); 
@@ -200,8 +202,8 @@ app.get("/u/:shortURL", (req, res) => {
 app.post("/urls/:shortURL/delete", (req, res) =>{
   //extract id
   const id = req.params.shortURL;
-  console.log(id); 
-  console.log(urlDatabase[id]); 
+  // console.log(id); 
+  // console.log(urlDatabase[id]); 
   //delete url
   delete urlDatabase[id]; 
 res.redirect("/urls");
