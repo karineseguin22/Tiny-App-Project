@@ -132,11 +132,15 @@ res.redirect('/urls');
 }); 
 
 app.post('/urls/:shortURL/update', (req, res) => {
+  if (req.session.user) {
   const id = req.params.shortURL;
   const info = req.body.longURL;
   urlDatabase[id]= info; 
   console.log(urlDatabase);
   res.redirect("/urls"); 
+  } else {
+    res.status(403).send("Log in first"); 
+  }
 }); 
   
 app.post("/urls/new", (req, res) => {
@@ -195,13 +199,16 @@ app.get("/u/:shortURL", (req, res) => {
 
     //delete
 app.post("/urls/:shortURL/delete", (req, res) =>{
-  //extract id
+  if (req.session.user) {
   const id = req.params.shortURL;
   // console.log(id); 
   // console.log(urlDatabase[id]); 
   //delete url
   delete urlDatabase[id]; 
 res.redirect("/urls");
+  }else{
+    res.redirect("/urls"); 
+  }
 });
   
 
