@@ -74,10 +74,6 @@ app.get("/login", (req, res) => {
 app.get("/register", (req, res) => {
   const userObject = users[req.cookies.user];
   let templateVars = {user: userObject};
-  // console.log(req.cookies);
-  // console.log(userObject); 
-  // console.log(templateVars); 
-  // console.log(users); 
   res.render("urls_register", templateVars);
 }); 
 
@@ -94,28 +90,20 @@ app.post("/register", (req, res) => {
   users[user_id]["email"] = req.body.email.toString(); 
   users[user_id]["password"] = req.body.password.toString(); 
   users[user_id]["id"] = user_id.toString();  
-  res.cookie("user", user_id) //created cookie 
+  res.cookie("user", user_id)  
 res.redirect('/urls'); 
 }
-//console.log(users); 
 }); 
 
-
-  //cookie 
 app.post('/login', (req, res) => {
   //res.cookie("username", req.body.username) //no longer need 
-  //console.log(req.body.username); 
-  //console.log(`show id:${getId(req.body.email_)}`); 
   if (checkEmail(req.body.email) !== req.body.email) {
     res.status(403).send("Email and/or is invalid");
   }
   if (!getPassword(req.body.password)) {
     res.status(403).send("and/or password is invalid");
   } else {
-    res.cookie("user", getId(req.body.email)) //set cookie
-    // console.log(`what is cookie:${getId(req.body.email)}`);
-    // console.log(req.body); 
-    // console.log(req.body.email); 
+    res.cookie("user", getId(req.body.email)) 
   res.redirect('/urls'); 
 }
 }); 
@@ -125,21 +113,14 @@ app.post('/logout', (req, res) => {
 res.redirect('/urls'); 
 }); 
 
-//update post 
 app.post('/urls/:shortURL/update', (req, res) => {
-  // console.log('req body:', req.body); 
-  //extract id
   const id = req.params.shortURL;
-  //extract updated website a
   const info = req.body.longURL;
-  //update on object
   urlDatabase[id]= info; 
   console.log(urlDatabase);
-  //redirect 
   res.redirect("/urls"); 
 }); 
   
-//post route
 app.post("/urls/new", (req, res) => {
   //create new id that will represent short url
   const id = generateRandomString(); 
@@ -148,17 +129,15 @@ app.post("/urls/new", (req, res) => {
   //add to object
   urlDatabase[id] = {};
   urlDatabase[id]["longURL"] = req.body.longURL; 
-  //urlDatabase[id]["userID"] = req.cookie.user; 
-  console.log('urlDatabase', urlDatabase); //Log our new object 
-  //console.log(req.body);  // Log the POST request body to the console
-  //console.log(newUrl.longURL) //no longer valid 
-  //console.log(id); 
-  res.redirect(`/urls/${id}`);         // redirect to link of website we just added 
+  urlDatabase[id]["userID"] = req.cookies.user; 
+  //console.log('urlDatabase', urlDatabase); //Log our new object 
+  res.redirect(`/urls`);        
 });
 
 app.get("/urls", (req, res) => {
   const userObject = users[req.cookies.user];
   let templateVars = { urls: urlDatabase, user: userObject };
+   console.log(templateVars); 
   res.render("urls_index", templateVars);
 });
 

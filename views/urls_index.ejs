@@ -16,15 +16,17 @@
     <% include ../views/partials/_header.ejs %>
     </header>
   <ul>
+<%if (user){%>
 <%for (var property in urls){  %>
+        <%if(urls[property].userID === user.id){%>
         <li><%=property %> : <%= urls[property].longURL%>
         <form method="POST" action="/urls/<%=property%>/delete">
         <button type="submit">DELETE</button>
         </form>
         </li>
-
-        <% }%> 
-    
+        <%}%>
+<% }%> 
+ <%}%>
 </ul>
 
 <a href='#'>To shorten url</a>
