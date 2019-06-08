@@ -127,7 +127,7 @@ for (const key in users) {
 }); 
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('user'); 
+  req.session = null; 
 res.redirect('/urls'); 
 }); 
 
@@ -154,7 +154,7 @@ app.post("/urls/new", (req, res) => {
 
 app.get("/urls", (req, res) => {
   const userObject = users[req.session.user];
-  let templateVars = { urls: urlDatabase, user: userObject };
+  let templateVars = { urls: urlDatabase, user: userObject};
    console.log(templateVars); 
   res.render("urls_index", templateVars);
 });
@@ -177,21 +177,19 @@ app.get("/urls/new", (req, res) => {
 
 app.get("/urls/:shortURL", (req, res) => {
   const userObject = users[req.session.user];
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], user: userObject};
+  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], user: userObject, urlDatabase: urlDatabase};
   //console.log(urlDatabase[req.params.shortURL]);
+  if (req.session.user) {
   res.render("urls_show", templateVars);
+} else {
+  res.status(403).send("Log in first");
+}
 });
 
 //short version of "/urls/:shortURL" (not done)
 //The goal is to go to long url 
 app.get("/u/:shortURL", (req, res) => {
-  //const sURL = req.params.shortURL; //not neccesary 
   const longURL = urlDatabase[req.params.shortURL];
-  //console.log(urlDatabase.b2xVn2); 
-  //console.log(req.params.shortURL);//gives shortURL ex: b2xVn2  
-  //console.log(sURL); // gives shortURL
-  //console.log(urlDatabase[sURL]);// need to put in square brakets when variable
-
   res.redirect(longURL);
 });
 
