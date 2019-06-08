@@ -8,6 +8,10 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
+const bcrypt = require('bcrypt');
+//const password = "purple-monkey-dinosaur"; // found in the req.params object
+// const hashedPassword = bcrypt.hashSync(password, 10);
+
 function generateRandomString() {
   return Math.floor((Math.random()*1000000000)).toString(36); 
 }
@@ -54,8 +58,7 @@ var urlDatabase = {
     "9sm5xK": { longURL: "http://www.google.com", userID: "aJ481W"}
   };
 
-  //creating global object called user 
-  const users = {}
+  const users = {};  
 //---------------------------------------------------------------------------------
 //http://localhost:8080/urls 
 
@@ -85,12 +88,13 @@ app.post("/register", (req, res) => {
     res.status(400).send("Email already exist");
   
  }else {  
-  const user_id = generateRandomString().toString(); 
+  const user_id = generateRandomString(); 
   users[user_id] = {}; 
-  users[user_id]["email"] = req.body.email.toString(); 
-  users[user_id]["password"] = req.body.password.toString(); 
-  users[user_id]["id"] = user_id.toString();  
+  users[user_id]["email"] = req.body.email; 
+  users[user_id]["password"] = bcrypt.hashSync(req.body.password, 10); 
+  users[user_id]["id"] = user_id;  
   res.cookie("user", user_id)  
+  console.log(users);
 res.redirect('/urls'); 
 }
 }); 
@@ -100,12 +104,19 @@ app.post('/login', (req, res) => {
   if (checkEmail(req.body.email) !== req.body.email) {
     res.status(403).send("Email and/or is invalid");
   }
-  if (!getPassword(req.body.password)) {
+  for (const key in users) {
+    console.log(users[key].password);
+  if (!(bcrypt.compareSync(req.body.password, users[key].password ))) {
     res.status(403).send("and/or password is invalid");
-  } else {
+  } 
+}
+for (const key in users) {
+  if ((bcrypt.compareSync(req.body.password, users[key].password ))) {
     res.cookie("user", getId(req.body.email)) 
   res.redirect('/urls'); 
+  }
 }
+  
 }); 
 
 app.post('/logout', (req, res) => {
