@@ -72,10 +72,14 @@ app.get("/", (req, res) => { //change so it does not redirect to user
 
 //to obtain login page
 app.get("/login", (req, res) => {
+  if (req.session.user) {
+    res.redirect('/urls');
+  } else { 
   const userObject = users[req.session.user];
   let templateVars = {user: userObject};
   res.render("login", templateVars)
-}); 
+  }
+});  
 
 //get to obtain register page
 app.get("/register", (req, res) => {
@@ -154,6 +158,7 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
+////the long url NEEDS http:// to work!!!!!!! 
 app.get("/urls/new", (req, res) => { 
   const userObject = users[req.session.user];
   let templateVars = {user: userObject};
@@ -178,8 +183,8 @@ app.get("/urls/:shortURL", (req, res) => {
 }
 });
 
-//(not done)
 //The goal is to go to long url 
+//the long url NEEDS http:// to work!!!!!!!
 app.get("/u/:shortURL", (req, res) => { 
   res.redirect(urlDatabase[req.params.shortURL].longURL);
 });
