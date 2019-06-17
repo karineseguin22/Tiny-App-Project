@@ -178,11 +178,10 @@ app.get("/urls/:shortURL", (req, res) => {
 }
 });
 
-//short version of "/urls/:shortURL" (not done)
+//(not done)
 //The goal is to go to long url 
-app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL];
-  res.redirect(longURL);
+app.get("/u/:shortURL", (req, res) => { 
+  res.redirect(urlDatabase[req.params.shortURL].longURL);
 });
 
     //delete
@@ -198,16 +197,6 @@ res.redirect("/urls");
 });
   
 
-
-app.get("/urls.json", (req, res) => {
-    res.json(urlDatabase);
-  });
-
-app.get("/hello", (req, res) => {
-    res.send("<html><body>Hello <b>World</b></body></html>\n");
-  });
-
- 
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
