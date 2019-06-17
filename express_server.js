@@ -62,8 +62,12 @@ var urlDatabase = {
 //---------------------------------------------------------------------------------
 //http://localhost:8080/urls 
 
-app.get("/", (req, res) => {
-  res.send("Hello!");
+app.get("/", (req, res) => { //change so it does not redirect to user 
+  if (req.session.user) {
+    res.redirect('/urls');
+    } else {
+      res.redirect('/login');   
+    }
 });
 
 //to obtain login page
