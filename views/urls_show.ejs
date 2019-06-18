@@ -10,14 +10,10 @@
 <body style="font-size:20px; padding:50px;">
     <!-- Add EJS code here -->
     <%= //create a for in loop  %> 
-    <% //let web = (Object.keys(urls)); %>
      <header>
     <% include ../views/partials/_header.ejs %>
 </header>
-<%console.log(urlDatabase)%>
 <%for (var property in urlDatabase){%>
-<%console.log("short url in database", property);%>
-<%console.log("wanted short url",shortURL);%>
 <%if (urlDatabase[property].userID === user.id && property === shortURL){%>
 <p> <%=shortURL%> : <%=longURL%></p> 
 <form method="POST" action="/urls/<%=shortURL%>/update">
