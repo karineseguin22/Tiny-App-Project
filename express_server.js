@@ -49,6 +49,15 @@ const getPassword = function (password){
   return false; 
   }
   
+  //this generates the current date in mm/dd/yyyy format
+  const getDate = function (){
+  const fullDate =new Date();
+  const dd = String(fullDate.getDate()).padStart(2, '0');/* padStart() is a method that allows to have zeroother numbers before 5 ex: 05*/
+  const mm =  String(fullDate.getMonth()).padStart(2, '0');
+  const yyyy =  String(fullDate.getFullYear()); 
+  const date = mm + '/' + dd + '/' + yyyy; 
+  return date; 
+  }
 //---------------------------------------------------------------------------------
 //Databases
 
