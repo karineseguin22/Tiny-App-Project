@@ -154,18 +154,13 @@ app.post('/urls/:shortURL/update', (req, res) => {
 }); 
   
 app.post("/urls/new", (req, res) => {
-  console.log((req.body.longURL).substring(0,7));
-  if ((req.body.longURL).substring(0,7) === 'http://') {
+  if ((req.body.longURL).substring(0,7) === 'http://') { //check if http:// is there when creating link
   //create new id that will represent short url
   const id = generateRandomString(); 
-  //obtain body from browser
-  //const newUrl = req.body; //this line was not necessary 
-  //add to object
   urlDatabase[id] = {};
   urlDatabase[id]["longURL"] = req.body.longURL; 
   urlDatabase[id]["userID"] = req.session.user; 
   urlDatabase[id]["date"] = getDate(); 
-  console.log('database after you create new link:',urlDatabase);
   res.redirect('/urls');   
   }else{
     res.status(403).send("Add http:// at the beginning");
@@ -173,7 +168,6 @@ app.post("/urls/new", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  console.log('users', users); 
   const userObject = users[req.session.user];
   let templateVars = { urls: urlDatabase, user: userObject};
   res.render("urls_index", templateVars);
@@ -195,13 +189,6 @@ app.get("/urls/new", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   const userObject = users[req.session.user];
   let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL].longURL, user: userObject, urlDatabase: urlDatabase};
-  console.log('user:', userObject); 
-  console.log('test:',urlDatabase[req.params.shortURL]); 
-  console.log("database when you edit link:", urlDatabase); //has undefined properties
-  console.log('big variable',templateVars); 
-  console.log('shortURL:',req.params.shortURL);
-  console.log('database for specific url:',urlDatabase[req.params.shortURL]);
-  console.log('userID:',urlDatabase[req.params.shortURL].userID);
   if (!req.session.user) {
   res.status(403).send("Log in first");
   //}else if(urlDatabase[req.params.shortURL] = undefined){
