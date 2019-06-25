@@ -159,8 +159,7 @@ app.post("/urls/new", (req, res) => {
   urlDatabase[id]["longURL"] = req.body.longURL; 
   urlDatabase[id]["userID"] = req.session.user; 
   urlDatabase[id]["date"] = getDate(); 
-  res.redirect(`/urls`);      
-  console.log('database:',urlDatabase);  
+  res.redirect(`/urls`);       
 });
 
 app.get("/urls", (req, res) => {

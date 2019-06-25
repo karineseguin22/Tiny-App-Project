@@ -19,7 +19,7 @@
 <%if (user){%>
 <%for (var property in urls){  %>
         <%if(urls[property].userID === user.id){%>
-        <li><%=property %> : <%= urls[property].longURL%>
+        <li><%=property %> : <%= urls[property].longURL%> <%=urls[property].date%>
         <form method="POST" action="/urls/<%=property%>/delete">
         <button type="submit">DELETE</button>
         </form>
