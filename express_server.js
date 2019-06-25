@@ -185,10 +185,13 @@ app.get("/urls/new", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   const userObject = users[req.session.user];
   let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL].longURL, user: userObject, urlDatabase: urlDatabase};
-  if (req.session.user) {
-  res.render("urls_show", templateVars);
-} else {
+  if (!req.session.user) {
   res.status(403).send("Log in first");
+  res.render("urls_show", templateVars);
+  }else if(req.session.user && urlDatabase[req.params.shortURL].userID != req.session.user){
+    res.status(403).send("You can only edit your own URL");
+} else {
+  res.render("urls_show", templateVars);
 }
 });
 

@@ -14,7 +14,7 @@
     <% include ../views/partials/_header.ejs %>
 </header>
 <%for (var property in urlDatabase){%>
-<%if (urlDatabase[property].userID === user.id && property === shortURL){%>   <!-- This check if  -->
+<%if (urlDatabase[property].userID === user.id && property === shortURL){%>   <!-- Returns this page if the user has the url  -->
 <p> <%=shortURL%> : <%=longURL%></p> 
 <form method="POST" action="/urls/<%=shortURL%>/update">
 <input class="form-control" type="text" name="longURL" placeholder="http://" style="width: 300px; margin: 1em">
@@ -22,12 +22,7 @@
 <button type="submit">UPDATE</button>
  </form>
  <%}%> 
-<%}%>
-<%for (var property in urlDatabase){%>
-<%if (urlDatabase[property].userID === user.id && property != shortURL){%>
-<p> You can only edit your own URL</p>
- <%}%> 
-<%}%> 
+  <%}%> 
 </body> 
 
 </ul>
