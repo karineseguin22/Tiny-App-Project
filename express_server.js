@@ -92,9 +92,13 @@ app.get("/login", (req, res) => {
 
 //get to obtain register page
 app.get("/register", (req, res) => {
+  if (req.session.user) {
+    res.redirect('/urls');
+  } else { 
   const userObject = users[req.session.user];
   let templateVars = {user: userObject};
   res.render("urls_register", templateVars);
+  }
 }); 
 
 //to post register information 
