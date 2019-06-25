@@ -16,7 +16,7 @@
 <%for (var property in urlDatabase){%>
 <%if (urlDatabase[property].userID === user.id && property === shortURL){%>   <!-- Returns this page if the user has the url  -->
 <p> <%=shortURL%> : <%=longURL%></p> 
-<form method="POST" action="/urls/<%=shortURL%>/update">
+<form method="POST" action="/urls/<%=shortURL%>">
 <input class="form-control" type="text" name="longURL" placeholder="http://" style="width: 300px; margin: 1em">
 
 <button type="submit">UPDATE</button>

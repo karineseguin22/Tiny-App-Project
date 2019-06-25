@@ -142,11 +142,12 @@ app.post('/logout', (req, res) => {
 res.redirect('/urls'); 
 }); 
 
-app.post('/urls/:shortURL/update', (req, res) => {
+app.post('/urls/:shortURL', (req, res) => {
   if (req.session.user) {
   const id = req.params.shortURL;
   const info = req.body.longURL;
   urlDatabase[id].longURL= info; 
+  urlDatabase[id].date= getDate(); //update date 
   res.redirect("/urls"); 
   } else {
     res.status(403).send("Log in first"); 
