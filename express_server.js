@@ -159,6 +159,7 @@ app.post("/urls/new", (req, res) => {
   urlDatabase[id]["longURL"] = req.body.longURL; 
   urlDatabase[id]["userID"] = req.session.user; 
   urlDatabase[id]["date"] = getDate(); 
+  console.log('database:',urlDatabase);
   res.redirect(`/urls`);       
 });
 
@@ -183,9 +184,7 @@ app.get("/urls/new", (req, res) => {
 
 app.get("/urls/:shortURL", (req, res) => {
   const userObject = users[req.session.user];
-
   let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL].longURL, user: userObject, urlDatabase: urlDatabase};
-
   if (req.session.user) {
   res.render("urls_show", templateVars);
 } else {
