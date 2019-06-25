@@ -153,7 +153,7 @@ app.post('/urls/:shortURL/update', (req, res) => {
   }
 }); 
   
-app.post("/urls/new", (req, res) => {
+app.post("/urls", (req, res) => {
   if ((req.body.longURL).substring(0,7) === 'http://') { //check if http:// is there when creating link
   //create new id that will represent short url
   const id = generateRandomString(); 
@@ -173,7 +173,6 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
-////the long url NEEDS http:// to work!!!!!!! 
 app.get("/urls/new", (req, res) => { 
   const userObject = users[req.session.user];
   let templateVars = {user: userObject};
