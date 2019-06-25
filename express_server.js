@@ -150,6 +150,8 @@ app.post('/urls/:shortURL/update', (req, res) => {
 }); 
   
 app.post("/urls/new", (req, res) => {
+  console.log((req.body.longURL).substring(0,7));
+  if ((req.body.longURL).substring(0,7) === 'http://') {
   //create new id that will represent short url
   const id = generateRandomString(); 
   //obtain body from browser
@@ -159,11 +161,15 @@ app.post("/urls/new", (req, res) => {
   urlDatabase[id]["longURL"] = req.body.longURL; 
   urlDatabase[id]["userID"] = req.session.user; 
   urlDatabase[id]["date"] = getDate(); 
-  console.log('database:',urlDatabase);
-  res.redirect(`/urls`);       
+  console.log('database after you create new link:',urlDatabase);
+  res.redirect('/urls');   
+  }else{
+    res.status(403).send("Add http:// at the beginning");
+  }    
 });
 
 app.get("/urls", (req, res) => {
+  console.log('users', users); 
   const userObject = users[req.session.user];
   let templateVars = { urls: urlDatabase, user: userObject};
   res.render("urls_index", templateVars);
@@ -185,9 +191,17 @@ app.get("/urls/new", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   const userObject = users[req.session.user];
   let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL].longURL, user: userObject, urlDatabase: urlDatabase};
+  console.log('user:', userObject); 
+  console.log('test:',urlDatabase[req.params.shortURL]); 
+  console.log("database when you edit link:", urlDatabase); //has undefined properties
+  console.log('big variable',templateVars); 
+  console.log('shortURL:',req.params.shortURL);
+  console.log('database for specific url:',urlDatabase[req.params.shortURL]);
+  console.log('userID:',urlDatabase[req.params.shortURL].userID);
   if (!req.session.user) {
   res.status(403).send("Log in first");
-  res.render("urls_show", templateVars);
+  //}else if(urlDatabase[req.params.shortURL] = undefined){
+    //res.status(403).send("The URL does not exist"); 
   }else if(req.session.user && urlDatabase[req.params.shortURL].userID != req.session.user){
     res.status(403).send("You can only edit your own URL");
 } else {
