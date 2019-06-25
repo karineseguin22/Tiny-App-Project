@@ -53,7 +53,7 @@ const getPassword = function (password){
   const getDate = function (){
   const fullDate =new Date();
   const dd = String(fullDate.getDate()).padStart(2, '0');/* padStart() is a method that allows to have zeroother numbers before 5 ex: 05*/
-  const mm =  String(fullDate.getMonth()).padStart(2, '0');
+  const mm =  String((fullDate.getMonth())+ 1).padStart(2, '0'); //note month is from 0 to 11, so add 1 
   const yyyy =  String(fullDate.getFullYear()); 
   const date = mm + '/' + dd + '/' + yyyy; 
   return date; 
@@ -63,8 +63,8 @@ const getPassword = function (password){
 
 //data base storing website links
 var urlDatabase = {
-    "b2xVn2": { longURL: "http://www.lighthouselabs.ca", userID: "aJ481W"},
-    "9sm5xK": { longURL: "http://www.google.com", userID: "aJ481W"}
+    "b2xVn2": { longURL: "http://www.lighthouselabs.ca", userID: "aJ481W", date:"06/25/19"},
+    "9sm5xK": { longURL: "http://www.google.com", userID: "aJ481W", date:"06/25/19"}
   };
 
   const users = {};  
@@ -158,7 +158,9 @@ app.post("/urls/new", (req, res) => {
   urlDatabase[id] = {};
   urlDatabase[id]["longURL"] = req.body.longURL; 
   urlDatabase[id]["userID"] = req.session.user; 
-  res.redirect(`/urls`);        
+  urlDatabase[id]["date"] = getDate(); 
+  res.redirect(`/urls`);      
+  console.log('database:',urlDatabase);  
 });
 
 app.get("/urls", (req, res) => {
